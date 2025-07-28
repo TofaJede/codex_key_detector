@@ -171,7 +171,7 @@ function updateResults() {
         if (k === dominant) bars[k].label.classList.add('dominate');
         else bars[k].label.classList.remove('dominate');
     });
-    mainKeyEl.textContent = dominant ? `Key: ${dominant}` : 'Key: --';
+    mainKeyEl.textContent = dominant || '--';
 }
 
 function updateBpm(rms) {
@@ -199,9 +199,9 @@ function updateBpm(rms) {
         const beats = beatTimes.length - 1;
         const avg = span / beats;
         const bpm = Math.round(60 / avg);
-        bpmEl.textContent = `BPM: ${bpm}`;
+        bpmEl.textContent = String(bpm);
     } else {
-        bpmEl.textContent = 'BPM: --';
+        bpmEl.textContent = '--';
     }
 }
 
@@ -253,8 +253,8 @@ resetButton.addEventListener('click', () => {
     beatTimes.length = 0;
     lastBeatTime = 0;
     lastRms = 0;
-    bpmEl.textContent = 'BPM: --';
-    mainKeyEl.textContent = 'Key: --';
+    bpmEl.textContent = '--';
+    mainKeyEl.textContent = '--';
 });
 
 startButton.addEventListener('click', () => {
