@@ -4,6 +4,8 @@ const resultsEl = document.getElementById('results');
 const bpmEl = document.getElementById('bpm');
 const mainKeyEl = document.getElementById('mainKey');
 const resetButton = document.getElementById('resetButton');
+const startScreen = document.getElementById('startScreen');
+const startButton = document.getElementById('startButton');
 
 const ACCENT_PURPLE = 'rgb(170,0,255)';
 const ACCENT_RED = 'rgb(255,0,80)';
@@ -222,24 +224,29 @@ function process() {
 }
 
 async function start() {
-    setupBars();
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const supported = navigator.mediaDevices.getSupportedConstraints();
-    const audioConstraints = {};
-    if (supported.echoCancellation) audioConstraints.echoCancellation = false;
-    if (supported.noiseSuppression) audioConstraints.noiseSuppression = false;
-    if (supported.autoGainControl) audioConstraints.autoGainControl = false;
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
-    await audioCtx.resume();
-    const source = audioCtx.createMediaStreamSource(stream);
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 2048;
-    bufferLength = analyser.fftSize;
-    dataArray = new Float32Array(bufferLength);
-    source.connect(analyser);
-    process();
+    try {
+        setupBars();
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const supported = navigator.mediaDevices.getSupportedConstraints();
+        const audioConstraints = {};
+        if (supported.echoCancellation) audioConstraints.echoCancellation = false;
+        if (supported.noiseSuppression) audioConstraints.noiseSuppression = false;
+        if (supported.autoGainControl) audioConstraints.autoGainControl = false;
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
+        await audioCtx.resume();
+        const source = audioCtx.createMediaStreamSource(stream);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        bufferLength = analyser.fftSize;
+        dataArray = new Float32Array(bufferLength);
+        source.connect(analyser);
+        process();
+    } catch (err) {
+        console.error(err);
+        alert('Microphone access failed: ' + err.message);
+    }
 }
 
 resetButton.addEventListener('click', () => {
@@ -252,4 +259,7 @@ resetButton.addEventListener('click', () => {
     mainKeyEl.textContent = 'Key: --';
 });
 
-window.addEventListener('load', start);
+startButton.addEventListener('click', () => {
+    startScreen.style.display = 'none';
+    start();
+});
