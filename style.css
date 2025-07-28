@@ -73,6 +73,11 @@ body {
     background: rgb(130, 81, 192);
 }
 
+#bpm {
+    margin-top: 10px;
+    font-size: 24px;
+}
+
 .dominate {
     font-size: 1.2em;
     font-weight: bold;
