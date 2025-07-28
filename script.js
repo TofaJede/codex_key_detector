@@ -5,7 +5,8 @@ const bpmEl = document.getElementById('bpm');
 const mainKeyEl = document.getElementById('mainKey');
 const resetButton = document.getElementById('resetButton');
 
-const ACCENT = 'rgb(0,255,170)';
+const ACCENT_PURPLE = 'rgb(170,0,255)';
+const ACCENT_RED = 'rgb(255,0,80)';
 
 let audioCtx, analyser, bufferLength, dataArray;
 let notes = [];
@@ -122,11 +123,22 @@ function drawWave() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     const sliceWidth = canvas.width / bufferLength;
     const amplitude = 0.7;
+
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, ACCENT_PURPLE);
+    gradient.addColorStop(1, ACCENT_RED);
+
     const waves = [
-        { color: ACCENT, glow: ACCENT, offset: 0 },
-        { color: 'rgba(150,0,255,0.7)', glow: 'rgb(150,0,255)', offset: 2 },
-        { color: 'rgba(200,0,255,0.7)', glow: 'rgb(200,0,255)', offset: -2 }
+        { offset: 0 },
+        { offset: 2 },
+        { offset: -2 }
     ];
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = gradient;
+    ctx.shadowColor = ACCENT_RED;
+    ctx.shadowBlur = 20;
+
     waves.forEach(w => {
         ctx.beginPath();
         let x = 0;
@@ -136,10 +148,6 @@ function drawWave() {
             else ctx.lineTo(x, y);
             x += sliceWidth;
         }
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = w.color;
-        ctx.shadowColor = w.glow;
-        ctx.shadowBlur = 20;
         ctx.stroke();
     });
     ctx.shadowBlur = 0;
