@@ -3,7 +3,7 @@ body {
     background: url('background.png') no-repeat center center fixed;
     background-size: cover;
     color: #eee;
-    font-family: Arial, sans-serif;
+    font-family: 'Noto Music', Arial, sans-serif;
     overflow: hidden;
     position: relative;
     perspective: 1000px;
@@ -43,6 +43,12 @@ body {
                 0 0 40px rgba(255,0,80,0.6);
     cursor: pointer;
     transform: translateZ(80px);
+}
+
+#startButton::before {
+    content: "\266B ";
+    font-family: 'Noto Music', sans-serif;
+    margin-right: 4px;
 }
 
 #app::before {
@@ -105,6 +111,12 @@ body {
     transform: translateZ(80px);
 }
 
+#mainKey::before {
+    content: "\1D11E ";
+    font-family: 'Noto Music', sans-serif;
+    margin-right: 6px;
+}
+
 #mainKey::after {
     content: '';
     position: absolute;
@@ -130,6 +142,12 @@ body {
         0 0 30px rgb(255,0,80);
     position: relative;
     transform: translateZ(70px);
+}
+
+#bpm::before {
+    content: "\2669 ";
+    font-family: 'Noto Music', sans-serif;
+    margin-right: 4px;
 }
 
 #bpm::after {
@@ -170,6 +188,17 @@ body {
     position: relative;
     overflow: hidden;
     transform: translateZ(60px);
+}
+
+#resetButton::after {
+    content: "\266A";
+    font-family: 'Noto Music', sans-serif;
+    font-size: 28px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 #resetButton::before {
