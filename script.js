@@ -2,9 +2,10 @@ const canvas = document.getElementById('visualizer');
 const ctx = canvas.getContext('2d');
 const resultsEl = document.getElementById('results');
 const bpmEl = document.getElementById('bpm');
+const mainKeyEl = document.getElementById('mainKey');
 const resetButton = document.getElementById('resetButton');
 
-const ACCENT = 'rgb(100, 51, 162)';
+const ACCENT = 'rgb(0,255,170)';
 
 let audioCtx, analyser, bufferLength, dataArray;
 let notes = [];
@@ -153,6 +154,7 @@ function updateResults() {
         if (k === dominant) bars[k].label.classList.add('dominate');
         else bars[k].label.classList.remove('dominate');
     });
+    mainKeyEl.textContent = dominant ? `Key: ${dominant}` : 'Key: --';
 }
 
 function updateBpm(rms) {
@@ -219,6 +221,7 @@ resetButton.addEventListener('click', () => {
     lastBeatTime = 0;
     lastRms = 0;
     bpmEl.textContent = 'BPM: --';
+    mainKeyEl.textContent = 'Key: --';
 });
 
 window.addEventListener('load', start);
