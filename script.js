@@ -170,16 +170,22 @@ function updateBpm(rms) {
     const now = audioCtx.currentTime;
     if (rms > threshold && lastRms <= threshold) {
         if (lastBeatTime) {
-            beatIntervals.push(now - lastBeatTime);
-            if (beatIntervals.length > 8) beatIntervals.shift();
+            const interval = now - lastBeatTime;
+            // ignore unrealistically short or long gaps between beats
+            if (interval > 0.25 && interval < 2) {
+                beatIntervals.push(interval);
+                if (beatIntervals.length > 8) beatIntervals.shift();
+            }
         }
         lastBeatTime = now;
         bpmEl.classList.add('beat');
         resetButton.classList.add('beat');
+        mainKeyEl.classList.add('beat');
         setTimeout(() => {
             bpmEl.classList.remove('beat');
             resetButton.classList.remove('beat');
-        }, 200);
+            mainKeyEl.classList.remove('beat');
+        }, 400);
     }
     lastRms = rms;
     if (beatIntervals.length) {
