@@ -121,8 +121,7 @@ function guessKey() {
 }
 
 function drawWave() {
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     const sliceWidth = canvas.width / bufferLength;
     const amplitude = 0.7;
 
