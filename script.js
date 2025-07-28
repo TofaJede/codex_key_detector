@@ -14,7 +14,7 @@ let audioCtx, analyser, bufferLength, dataArray;
 let notes = [];
 let lastRms = 0;
 let lastBeatTime = 0;
-const beatIntervals = [];
+const beatTimes = [];
 const noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 
 const keys = [];
@@ -179,13 +179,10 @@ function updateBpm(rms) {
     const threshold = 0.3;
     const now = audioCtx.currentTime;
     if (rms > threshold && lastRms <= threshold) {
-        if (lastBeatTime) {
-            const interval = now - lastBeatTime;
-            // ignore unrealistically short or long gaps between beats
-            if (interval > 0.25 && interval < 2) {
-                beatIntervals.push(interval);
-                if (beatIntervals.length > 8) beatIntervals.shift();
-            }
+        const interval = now - lastBeatTime;
+        if (!lastBeatTime || (interval > 0.25 && interval < 2)) {
+            beatTimes.push(now);
+            if (beatTimes.length > 16) beatTimes.shift();
         }
         lastBeatTime = now;
         bpmEl.classList.add('beat');
@@ -198,8 +195,10 @@ function updateBpm(rms) {
         }, 400);
     }
     lastRms = rms;
-    if (beatIntervals.length) {
-        const avg = beatIntervals.reduce((a,b)=>a+b,0) / beatIntervals.length;
+    if (beatTimes.length >= 2) {
+        const span = beatTimes[beatTimes.length - 1] - beatTimes[0];
+        const beats = beatTimes.length - 1;
+        const avg = span / beats;
         const bpm = Math.round(60 / avg);
         bpmEl.textContent = `BPM: ${bpm}`;
     } else {
@@ -252,7 +251,7 @@ async function start() {
 resetButton.addEventListener('click', () => {
     notes = [];
     keys.forEach(k => keyCounts[k] = 0);
-    beatIntervals.length = 0;
+    beatTimes.length = 0;
     lastBeatTime = 0;
     lastRms = 0;
     bpmEl.textContent = 'BPM: --';
