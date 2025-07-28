@@ -1,33 +1,88 @@
 body {
     margin: 0;
-    background: #111;
+    background: #000;
     color: #eee;
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    overflow: hidden;
 }
 
 #app {
-    text-align: center;
-    width: 80%;
-    max-width: 900px;
+    position: relative;
+    width: 100%;
+    height: 100vh;
 }
 
 #visualizer {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 200px;
+    height: 100%;
     background: #000;
-    border: 1px solid rgb(100, 51, 162);
-    box-shadow: 0 0 20px rgba(100, 51, 162, 0.8);
+    border: none;
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+#info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#mainKey {
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 0 0 20px rgb(0,255,170);
+    margin-bottom: 10px;
+}
+
+#bpm {
+    font-size: 32px;
+    text-shadow: 0 0 15px rgb(0,255,170);
+}
+
+#resetButton {
+    pointer-events: auto;
+    margin: 30px 0;
+    padding: 20px;
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    border: none;
+    background: rgb(0,255,170);
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(0,255,170,0.8);
+    cursor: pointer;
+    transition: transform 0.3s;
+    animation: pulse 2s infinite alternate;
+}
+
+#resetButton:hover {
+    transform: scale(1.1);
 }
 
 #results {
-    margin-top: 20px;
+    pointer-events: auto;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
+    width: 90%;
 }
 
 .key-bar {
@@ -56,32 +111,15 @@ body {
     line-height: 20px;
 }
 
-#resetButton {
-    margin-top: 20px;
-    padding: 10px 20px;
-    border: none;
-    background: rgb(100, 51, 162);
-    color: #fff;
-    font-weight: bold;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(100, 51, 162, 0.8);
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#resetButton:hover {
-    background: rgb(130, 81, 192);
-}
-
-#bpm {
-    margin-top: 10px;
-    font-size: 24px;
-}
-
 .dominate {
     font-size: 1.2em;
     font-weight: bold;
     text-shadow: 0 0 10px rgb(100, 51, 162);
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 20px rgba(0,255,170,0.8); }
+    to { box-shadow: 0 0 40px rgba(0,255,170,1); }
 }
 
 @media (max-width: 600px) {
