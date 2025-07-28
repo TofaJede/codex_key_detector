@@ -1,12 +1,16 @@
 const canvas = document.getElementById('visualizer');
 const ctx = canvas.getContext('2d');
 const resultsEl = document.getElementById('results');
+const bpmEl = document.getElementById('bpm');
 const resetButton = document.getElementById('resetButton');
 
 const ACCENT = 'rgb(100, 51, 162)';
 
 let audioCtx, analyser, bufferLength, dataArray;
 let notes = [];
+let lastRms = 0;
+let lastBeatTime = 0;
+const beatIntervals = [];
 const noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 
 const keys = [];
@@ -151,8 +155,30 @@ function updateResults() {
     });
 }
 
+function updateBpm(rms) {
+    const threshold = 0.3;
+    const now = audioCtx.currentTime;
+    if (rms > threshold && lastRms <= threshold) {
+        if (lastBeatTime) {
+            beatIntervals.push(now - lastBeatTime);
+            if (beatIntervals.length > 8) beatIntervals.shift();
+        }
+        lastBeatTime = now;
+    }
+    lastRms = rms;
+    if (beatIntervals.length) {
+        const avg = beatIntervals.reduce((a,b)=>a+b,0) / beatIntervals.length;
+        const bpm = Math.round(60 / avg);
+        bpmEl.textContent = `BPM: ${bpm}`;
+    } else {
+        bpmEl.textContent = 'BPM: --';
+    }
+}
+
 function process() {
     analyser.getFloatTimeDomainData(dataArray);
+    const rms = Math.sqrt(dataArray.reduce((s,v)=>s+v*v,0) / bufferLength);
+    updateBpm(rms);
     drawWave();
     const pitch = autoCorrelate(dataArray, audioCtx.sampleRate);
     if (pitch !== -1) {
@@ -170,7 +196,13 @@ async function start() {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const supported = navigator.mediaDevices.getSupportedConstraints();
+    const audioConstraints = {};
+    if (supported.echoCancellation) audioConstraints.echoCancellation = false;
+    if (supported.noiseSuppression) audioConstraints.noiseSuppression = false;
+    if (supported.autoGainControl) audioConstraints.autoGainControl = false;
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
+    await audioCtx.resume();
     const source = audioCtx.createMediaStreamSource(stream);
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 2048;
@@ -183,6 +215,10 @@ async function start() {
 resetButton.addEventListener('click', () => {
     notes = [];
     keys.forEach(k => keyCounts[k] = 0);
+    beatIntervals.length = 0;
+    lastBeatTime = 0;
+    lastRms = 0;
+    bpmEl.textContent = 'BPM: --';
 });
 
 window.addEventListener('load', start);
