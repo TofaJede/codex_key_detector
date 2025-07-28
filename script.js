@@ -120,20 +120,28 @@ function guessKey() {
 function drawWave() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = ACCENT;
-    ctx.beginPath();
     const sliceWidth = canvas.width / bufferLength;
-    let x = 0;
-    for (let i = 0; i < bufferLength; i++) {
-        const v = (dataArray[i] * 0.5 + 0.5) * canvas.height;
-        if (i === 0) ctx.moveTo(x, v);
-        else ctx.lineTo(x, v);
-        x += sliceWidth;
-    }
-    ctx.shadowColor = ACCENT;
-    ctx.shadowBlur = 20;
-    ctx.stroke();
+    const amplitude = 0.7;
+    const waves = [
+        { color: ACCENT, glow: ACCENT, offset: 0 },
+        { color: 'rgba(150,0,255,0.7)', glow: 'rgb(150,0,255)', offset: 2 },
+        { color: 'rgba(200,0,255,0.7)', glow: 'rgb(200,0,255)', offset: -2 }
+    ];
+    waves.forEach(w => {
+        ctx.beginPath();
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+            const y = canvas.height / 2 + dataArray[i] * amplitude * canvas.height / 2 + w.offset;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+            x += sliceWidth;
+        }
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = w.color;
+        ctx.shadowColor = w.glow;
+        ctx.shadowBlur = 20;
+        ctx.stroke();
+    });
     ctx.shadowBlur = 0;
 }
 
@@ -166,6 +174,12 @@ function updateBpm(rms) {
             if (beatIntervals.length > 8) beatIntervals.shift();
         }
         lastBeatTime = now;
+        bpmEl.classList.add('beat');
+        resetButton.classList.add('beat');
+        setTimeout(() => {
+            bpmEl.classList.remove('beat');
+            resetButton.classList.remove('beat');
+        }, 200);
     }
     lastRms = rms;
     if (beatIntervals.length) {

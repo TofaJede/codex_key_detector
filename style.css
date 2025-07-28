@@ -87,6 +87,11 @@ body {
     animation: pulse 2s infinite alternate;
 }
 
+#bpm.beat,
+#resetButton.beat {
+    animation: beatScale 0.2s ease;
+}
+
 #resetButton:hover {
     transform: scale(1.1);
 }
@@ -148,6 +153,11 @@ body {
 @keyframes pulseBackground {
     from { opacity: 0.6; }
     to { opacity: 1; }
+}
+
+@keyframes beatScale {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
 }
 
 @media (max-width: 600px) {
