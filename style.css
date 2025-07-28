@@ -61,13 +61,55 @@ body {
 #mainKey {
     font-size: 48px;
     font-weight: bold;
-    text-shadow: 0 0 20px rgb(0,255,170);
+    text-shadow:
+        0 0 20px rgb(170,0,255),
+        0 0 40px rgb(255,0,80);
     margin-bottom: 10px;
+    position: relative;
+}
+
+#mainKey::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 140%;
+    height: 140%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background:
+        radial-gradient(circle, rgba(170,0,255,0.5), transparent 60%),
+        radial-gradient(circle, rgba(255,0,80,0.4), transparent 70%);
+    filter: blur(10px);
+    opacity: 0.7;
+    pointer-events: none;
+    animation: rotateDistort 8s linear infinite;
+    z-index: -1;
 }
 
 #bpm {
     font-size: 32px;
-    text-shadow: 0 0 15px rgb(0,255,170);
+    text-shadow:
+        0 0 15px rgb(170,0,255),
+        0 0 30px rgb(255,0,80);
+    position: relative;
+}
+
+#bpm::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background:
+        radial-gradient(circle, rgba(170,0,255,0.4), transparent 60%),
+        radial-gradient(circle, rgba(255,0,80,0.3), transparent 70%);
+    filter: blur(8px);
+    opacity: 0.7;
+    pointer-events: none;
+    animation: rotateDistort 8s linear infinite reverse;
+    z-index: -1;
 }
 
 #resetButton {
@@ -78,13 +120,34 @@ body {
     height: 120px;
     border-radius: 60px;
     border: none;
-    background: rgb(0,255,170);
-    color: #000;
+    background: rgba(170,0,255,0.4);
+    color: #fff;
     font-weight: bold;
-    box-shadow: 0 0 20px rgba(0,255,170,0.8);
+    box-shadow:
+        0 0 25px rgba(170,0,255,0.8),
+        0 0 50px rgba(255,0,80,0.6);
     cursor: pointer;
     transition: transform 0.3s;
     animation: pulse 2s infinite alternate;
+    position: relative;
+    overflow: hidden;
+}
+
+#resetButton::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background:
+        radial-gradient(circle, rgba(170,0,255,0.6), transparent 60%),
+        radial-gradient(circle, rgba(255,0,80,0.5), transparent 80%);
+    filter: blur(10px);
+    opacity: 0.8;
+    animation: rotateDistort 6s linear infinite;
+    pointer-events: none;
+    z-index: -1;
 }
 
 #bpm.beat,
@@ -142,8 +205,16 @@ body {
 }
 
 @keyframes pulse {
-    from { box-shadow: 0 0 20px rgba(0,255,170,0.8); }
-    to { box-shadow: 0 0 40px rgba(0,255,170,1); }
+    from {
+        box-shadow:
+            0 0 20px rgba(170,0,255,0.8),
+            0 0 35px rgba(255,0,80,0.6);
+    }
+    to {
+        box-shadow:
+            0 0 40px rgba(170,0,255,1),
+            0 0 60px rgba(255,0,80,0.8);
+    }
 }
 
 @keyframes spinBackground {
@@ -160,6 +231,11 @@ body {
     0% { transform: scale(1); }
     30% { transform: scale(1.2); }
     100% { transform: scale(1); }
+}
+
+@keyframes rotateDistort {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 @media (max-width: 600px) {
