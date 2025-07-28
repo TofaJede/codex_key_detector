@@ -88,8 +88,9 @@ body {
 }
 
 #bpm.beat,
+#mainKey.beat,
 #resetButton.beat {
-    animation: beatScale 0.2s ease;
+    animation: beatScale 0.4s ease-out;
 }
 
 #resetButton:hover {
@@ -156,8 +157,9 @@ body {
 }
 
 @keyframes beatScale {
-    from { transform: scale(1); }
-    to { transform: scale(1.2); }
+    0% { transform: scale(1); }
+    30% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 
 @media (max-width: 600px) {
