@@ -1,10 +1,86 @@
 body {
+    margin: 0;
+    background: #111;
+    color: #eee;
     font-family: Arial, sans-serif;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    min-height: 100vh;
 }
-#note-history {
-    margin-top: 10px;
+
+#app {
+    text-align: center;
+    width: 80%;
+    max-width: 900px;
+}
+
+#visualizer {
+    width: 100%;
+    height: 200px;
+    background: #000;
+    border: 1px solid rgb(100, 51, 162);
+    box-shadow: 0 0 20px rgba(100, 51, 162, 0.8);
+}
+
+#results {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.key-bar {
+    position: relative;
+    width: 30%;
+    background: rgba(100, 51, 162, 0.3);
+    margin: 5px 0;
+    height: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.key-bar-inner {
+    height: 100%;
+    background: rgb(100, 51, 162);
+    box-shadow: 0 0 8px rgb(100, 51, 162);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.key-label {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+#resetButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background: rgb(100, 51, 162);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(100, 51, 162, 0.8);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#resetButton:hover {
+    background: rgb(130, 81, 192);
+}
+
+.dominate {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgb(100, 51, 162);
+}
+
+@media (max-width: 600px) {
+    .key-bar {
+        width: 45%;
+    }
 }

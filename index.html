@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Key Detector</title>
+    <title>Music Key Detector</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Key Detector</h1>
-    <button id="start-btn">Start</button>
-    <div id="current-note">Current Note: -</div>
-    <div id="note-history">Notes: </div>
-    <div id="key-display">Likely Key: -</div>
+    <div id="app">
+        <canvas id="visualizer"></canvas>
+        <div id="results"></div>
+        <button id="resetButton">Reset</button>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
